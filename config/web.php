@@ -1,25 +1,32 @@
 <?php
-
-$params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
-
+//  'resources'=>__DIR__.'/../web/theme/metronic/assets',
+//  'resources' => __DIR__.'/../vendor/dlds/yii2-metronic',
+$params = require(__DIR__ . '/params.php');
+$db = require(__DIR__ . '/db.php');
+//EADER_FIXED,
 $config = [
     'id' => 'basic',
-    'name'=> 'Company Backend',
-//    'defaultRoute' => 'user/index',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-//    'layoutPath' => '@app/themes/metronic/views/layouts',
-//    'layoutPath' => '@app/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts',
-    'layoutPath' => '@app/themes/adminlte/views/layouts',
+    'language'   => 'es',
+    'sourceLanguage' => 'en',
+    'layoutPath' => '@app/themes/metronic/views/layouts',
+    //'layoutPath' => '@app/views/layouts',
+    'layout' => 'main',
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'php:m/d/Y',
+            'datetimeFormat' => 'php:d-M-Y H:i:s',
+            'timeFormat' => 'php:H:i:s',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'jCes-ibU1BiFszb-4aFtesryyPuA3Z-r',
+            'cookieValidationKey' => 'gUuVx5nQ4pgdKtM6S4rOSdyb236yeix7',
+           // 'csrfParam'=>'csfmambermanagement'
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -31,37 +38,20 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'view' => [
-//            'layout' => 'main.php'   @vendor\dmstr
-            'theme' => [
-                    'pathMap' => [
-                        '@app/views' => 'dmstr\yii2-adminlte-asset\example-views\yiisoft\yii2-app'
-                    ]
-                ]
-               
-        ],
-        'metronic'=>[
-            'class'=>'dlds\metronic\Metronic',
-//            'resources'=>__DIR__. '/web/metronic/assets/theme/assets',
-            'style'=>\dlds\metronic\Metronic::STYLE_MATERIAL,
-            'theme'=>\dlds\metronic\Metronic::THEME_LIGHT,
-            'layoutOption'=>\dlds\metronic\Metronic::LAYOUT_FLUID,
-            'headerOption'=>\dlds\metronic\Metronic::HEADER_FIXED,
-            'sidebarPosition'=>\dlds\metronic\Metronic::SIDEBAR_POSITION_LEFT,
-            'sidebarOption'=>\dlds\metronic\Metronic::SIDEBAR_MENU_ACCORDION,
-            'footerOption'=>\dlds\metronic\Metronic::FOOTER_FIXED,
-            ],
-        'i18n' => [
-            'translations' => [
-                'app' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@app/messages',
-                    'fileMap' => [ 'app' => 'app.php', ]
-                ]
-            ]
-        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        'metronic' => [
+            'class'=>'dlds\metronic\Metronic',
+            'resources'=>__DIR__.'/../web/theme/metronic/theme/assets',
+            'version'=>\dlds\metronic\Metronic::VERSION_1,
+            'style'=>\dlds\metronic\Metronic::STYLE_SQUARE,
+            'theme'=>\dlds\metronic\Metronic::THEME_DARK,
+            'layoutOption'=>\dlds\metronic\Metronic::LAYOUT_FLUID,
+            'headerOption'=>\dlds\metronic\Metronic::HEADER_DEFAULT,
+//            'sidebarPosition'=>\dlds\metronic\Metronic::SIDEBAR_POSITION_LEFT,
+//            'sidebarOption'=>\dlds\metronic\Metronic::SIDEBAR_MENU_ACCORDION,
+            'footerOption'=>\dlds\metronic\Metronic::FOOTER_FIXED,  
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -80,16 +70,89 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*'urlManager' => [
+        'i18n' => [
+                'translations' => [
+                    'app*' => [
+                        'class' => 'yii\i18n\PhpMessageSource',
+                        //'sourceLanguage' => 'en',
+                        //'basePath' => '@app/messages',
+                        'fileMap' => [
+                            'app' => 'app.php',
+                            'app/error' => 'error.php',
+                        ]
+                    ],
+                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation']
+                ],
+            ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@app/themes/metronic/views',
+                    //'@app/views' => '@app/views',
+                ],
+            ],
+        ],
+        'assetManager' => [
+            'basePath' => '@webroot/assets',
+            'baseUrl' => '@web/assets',
+            'linkAssets' => true,
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,   // do not publish the bundle
+                    'js' => [
+                        '//code.jquery.com/jquery-1.12.4.min.js',  // use custom jquery   jquery-1.11.2.min.js
+                    ]
+                ],
+
+                'dlds\metronic\bundles\ThemeAsset' => [
+                    'addons'=>[
+                        'default/login'=>[
+                            'css'=>[
+                                'pages/css/login-4.min.css',
+                            ],
+                            'js'=>[
+                                'global/plugins/backstretch/jquery.backstretch.min.js',
+
+                            ]
+                        ],
+                    ]
+                ],
+            ],
+        ],
+        'urlManager' => [
+            // Disable r= routes
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            //'languages' => ['en', 'es', 'fr', 'ru'], // List all supported languages her
+            'enableStrictParsing' => true,
             'rules' => [
-                '<action:\w+>' => 'site/<action>',
-                '<controller:\w+/?>' => '<controller>/index',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<controller:\w+>' => '<controller>',
+                '/' => 'site/index',
+                '<language:\w+>/<controller>/<action>/<id:\d+>/<title>' => '<controller>/<action>',
+                '<language:\w+>/<controller>/<id:\d+>/<title>' => '<controller>/index',
+                '<language:\w+>/<controller>/<action>/<id:\d+>' => '<controller>/<action>',
+                '<language:\w+>/<controller>/<action>' => '<controller>/<action>',
+                '<language:\w+>/<controller>' => '<controller>',
+                '<language:\w+>/'=>'site/index',
+//                'about' => 'site/about',
+//                'contact' => 'site/contact',
+//                'login' => 'site/login',
+//                'logout' => 'site/logout',
+//                'captcha' => 'site/captcha',
+//                'signup' => 'site/signup',
+//                'request-password-reset' => 'site/request-password-reset',
+//                'reset-password' => 'site/reset-password',
+//                 'member' => 'member',
+//                 'department' => 'department',
+//                'department/create' => 'department/create'
             ],
-        ],*/
+        ],
+    ],
+    'as beforeRequest' => [
+        'class' => 'app\components\LanguageHandler'
     ],
     'params' => $params,
 ];
@@ -107,7 +170,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1','192.168.1.21'],
     ];
 }
 

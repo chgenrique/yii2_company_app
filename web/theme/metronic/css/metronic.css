@@ -1,0 +1,24 @@
+/* 
+    Created on : Aug 10, 2017, 1:50:45 PM
+    Author     : enrique.chaviano
+*/
+
+.department-form {
+    padding-left: 20px;
+}
+
+.staff-member-form {
+    padding-left: 20px;
+}
+
+.footer {
+    padding-left: 50%;
+    background-color: #364150 !important;
+    color: #fff;
+    padding: 10px;
+}
+
+.footer-inner{
+    text-align: center;
+}
+/*.datepicker.datepicker-dropdown.dropdown-menu  { position: relative; z-index: 10000 !important; }*/

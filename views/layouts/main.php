@@ -3,12 +3,14 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+
+//$asset = Metronic::registerThemeAsset($this);
+//$directoryAsset = Yii::$app->assetManager->getPublishedUrl($asset->sourcePath);
 
 AppAsset::register($this);
 ?>
@@ -29,25 +31,30 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => Yii::t('app','My Company'),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
-        ],
+        ]
     ]);
+    
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Department', 'url' => ['/department/index']],
-            ['label' => 'Member', 'url' => ['/member/index']],
+            ['label' => Yii::t('app','Home'), 'url' => ['/site/index']],
+            !Yii::$app->user->isGuest ? (
+            ['label' => Yii::t('app','Departments'), 'url' => ['/department']]
+            ) : '',
+            !Yii::$app->user->isGuest ? (
+            ['label' => Yii::t('app','Members'), 'url' => ['/member']]
+            ) : '',
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+                ['label' => Yii::t('app','Login'), 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    Yii::t('app','Logout').' (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
@@ -57,21 +64,36 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
+    </div>
 
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
         <?= $content ?>
     </div>
 </div>
+    
+</div>
 
 <footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        
+    <div class="container-footer">
+        <div class="footer-left">
+            <p>&copy; <?php Yii::t('app','My Company'); ?> <?= date('Y') ?></p>
+        </div>
+        <div class="div-language">
+        <?php
+            $languages = Yii::$app->params['languages'];
+            foreach($languages as $key=>$lang)
+            {
+                echo Html::a(strtoupper($lang), ['lang', 'id' => $key], ['class' => 'btn btn-link']);
+            }
+        ?>
+        </div>
+        <div class="footer-right">
+            <p><?= Yii::powered() ?></p>
+        </div>
     </div>
 </footer>
 

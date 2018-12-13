@@ -1,9 +1,8 @@
 <?php
 
 return [
-//    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=company',
+    'dsn' => 'mysql:host=localhost;dbname=company2',
     'username' => 'root',
     'password' => '1234',
     'charset' => 'utf8',

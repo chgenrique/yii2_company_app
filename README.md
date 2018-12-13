@@ -190,20 +190,41 @@ To execute acceptance tests do the following:
    vendor/bin/codecept run unit,functional
    ```
 
-### Code coverage support
+### Yii Utils Commands
 
-By default, code coverage is disabled in `codeception.yml` configuration file, you should uncomment needed rows to be able
-to collect code coverage. You can run your tests and collect coverage with the following command:
+1. Create project
+    ```
+    composer create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic test2yii2
+ 
+    php yii serve
+    ```
+2. Messages
+   ```
+   ./yii message/config-template /var/www/html/test2yii2/messages/config.php
+    
+   ./yii message/config --languages=es,fr,ru --messagePath=messages /var/www/html/test2yii2/messages/languages.php -w
+   
+   ./yii message/extract @common/config/i18n
+   ```
 
-```
-#collect coverage for all tests
-vendor/bin/codecept run -- --coverage-html --coverage-xml
+3. After enable authManager, must generate tables for authentication:
+    ```
+    php yii migrate --migrationPath=@yii/rbac/migrations
+     
+    - yii2 framework - RBAC (Role Based)
+    - yii2 rbac migrate
+    - create model for RBAC
+    - Create default roles
+    - Access control, using behaviors
+    ```
+     
+4. Migrations
+    ```
+    cd /project
 
-#collect coverage only for unit tests
-vendor/bin/codecept run unit -- --coverage-html --coverage-xml
-
-#collect coverage for unit and functional tests
-vendor/bin/codecept run functional,unit -- --coverage-html --coverage-xml
-```
-
-You can see code coverage output under the `tests/_output` directory.
+    ./yii help migrate
+    ./yii migrate/create create_table_order
+ 
+    ./yii migrate/to m171219_181614_create_table_order
+    ./yii migrate/history 
+    ```

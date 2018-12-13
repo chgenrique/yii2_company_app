@@ -1,0 +1,17 @@
+/* 
+    Created on : Aug 9, 2017, 2:30:38 PM
+    Author     : enrique.chaviano
+*/
+
+
+a, button, code, div, img, input, label, li, p, pre, select, span, svg, table, td, textarea, th, ul{
+    border-radius: 0!important;
+}
+
+.metronic-body.modal-open.page-overflow .modal-scrollable,
+.metronic-body.modal-open.page-overflow .page-container,
+.metronic-body.modal-open.page-overflow .page-container .navbar-fixed-bottom,
+.metronic-body.modal-open.page-overflow .page-container .navbar-fixed-top {
+    overflow-y: visible!important;
+}
+
